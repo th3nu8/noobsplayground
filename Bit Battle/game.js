@@ -14,23 +14,23 @@ const TILE_HEIGHT = 32;
 const GRID_WIDTH = 250;
 const GRID_HEIGHT = 250;
 
-// --- Player position in world pixel coordinates, random spawn ---
+// Player in **grid coordinates**, will move independently of grid
 const player = {
-    x: Math.random() * GRID_WIDTH * TILE_WIDTH,
-    y: Math.random() * GRID_HEIGHT * TILE_HEIGHT,
+    x: Math.floor(Math.random() * GRID_WIDTH),
+    y: Math.floor(Math.random() * GRID_HEIGHT),
     color: 'red',
-    speed: 5
+    speed: 0.15 // in grid units per frame
 };
 
 const keys = {};
 window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
 window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
 
-// Convert world pixel coordinates to isometric screen coordinates
-function isoToScreen(x, y) {
+// Convert grid coordinates to screen coordinates
+function isoToScreen(gridX, gridY) {
     return {
-        x: (x - y) / 2,
-        y: (x + y) / 4
+        x: (gridX - gridY) * TILE_WIDTH / 2,
+        y: (gridX + gridY) * TILE_HEIGHT / 2
     };
 }
 
@@ -46,31 +46,30 @@ function gameLoop() {
     if (keys['a']) player.x -= player.speed;
     if (keys['d']) player.x += player.speed;
 
-    // Clamp player inside world bounds
-    const worldWidth = GRID_WIDTH * TILE_WIDTH;
-    const worldHeight = GRID_HEIGHT * TILE_HEIGHT;
-    player.x = clamp(player.x, 0, worldWidth);
-    player.y = clamp(player.y, 0, worldHeight);
+    // Clamp player inside grid
+    player.x = clamp(player.x, 0, GRID_WIDTH - 1);
+    player.y = clamp(player.y, 0, GRID_HEIGHT - 1);
 
-    // --- Camera follows player ---
-    const camX = player.x - canvas.width / 2;
-    const camY = player.y - canvas.height / 2;
+    // Camera offset so player stays centered
+    const cam = isoToScreen(player.x, player.y);
+    const camX = cam.x - canvas.width / 2;
+    const camY = cam.y - canvas.height / 2;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // --- Draw visible tiles to cover screen ---
-    const startCol = Math.max(0, Math.floor((camX) / TILE_WIDTH) - 2);
-    const endCol = Math.min(GRID_WIDTH, Math.ceil((camX + canvas.width) / TILE_WIDTH) + 2);
-    const startRow = Math.max(0, Math.floor((camY) / TILE_HEIGHT) - 2);
-    const endRow = Math.min(GRID_HEIGHT, Math.ceil((camY + canvas.height) / TILE_HEIGHT) + 2);
+    const buffer = 4; // extra tiles around screen
+    const startI = Math.max(0, Math.floor(player.x - canvas.width / TILE_WIDTH) - buffer);
+    const endI = Math.min(GRID_WIDTH, Math.ceil(player.x + canvas.width / TILE_WIDTH) + buffer);
+    const startJ = Math.max(0, Math.floor(player.y - canvas.height / TILE_HEIGHT) - buffer);
+    const endJ = Math.min(GRID_HEIGHT, Math.ceil(player.y + canvas.height / TILE_HEIGHT) + buffer);
 
-    for (let i = startCol; i < endCol; i++) {
-        for (let j = startRow; j < endRow; j++) {
-            const screen = isoToScreen(i * TILE_WIDTH, j * TILE_HEIGHT);
+    for (let i = startI; i < endI; i++) {
+        for (let j = startJ; j < endJ; j++) {
+            const screen = isoToScreen(i, j);
             const screenX = screen.x - camX;
             const screenY = screen.y - camY;
 
-            // Draw tile
             ctx.strokeStyle = 'black';
             ctx.beginPath();
             ctx.moveTo(screenX, screenY);
@@ -88,7 +87,7 @@ function gameLoop() {
         }
     }
 
-    // --- Draw player in center of screen ---
+    // --- Draw player in center ---
     ctx.fillStyle = player.color;
     ctx.beginPath();
     ctx.arc(canvas.width / 2, canvas.height / 2, 10, 0, Math.PI * 2);
