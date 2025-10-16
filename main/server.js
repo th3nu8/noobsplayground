@@ -1,18 +1,15 @@
-// ---- server.js ----
 const express = require('express');
 const path = require('path');
 
 const app = express();
 
-// Serve the main website (everything in the current folder)
-app.use('/', express.static(__dirname));
+// Serve index.html and other static files in the same folder
+app.use(express.static(path.join(__dirname)));
 
-// Optional health check route
-app.get('/health', (req, res) => {
-  res.status(200).send('OK');
-});
+// Optional health check
+app.get('/health', (req, res) => res.send('OK'));
 
-// Start the server on port 80
+// Start server on port 80
 const PORT = 80;
 app.listen(PORT, () => {
   console.log(`✅ Main website running at http://localhost:${PORT}`);
