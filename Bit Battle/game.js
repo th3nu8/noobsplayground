@@ -8,7 +8,7 @@ const GRID_WIDTH = 250;
 const GRID_HEIGHT = 250;
 
 const player = {
-    x: 125,  // start near the middle
+    x: 125, // start in middle
     y: 125,
     color: 'red',
     speed: 0.2
@@ -24,7 +24,7 @@ let camY = 0;
 window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
 window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
 
-// Convert grid coordinates to isometric screen coordinates
+// Convert grid coordinates to isometric screen coordinates (with camera)
 function isoToScreen(x, y) {
     return {
         x: (x - y) * TILE_WIDTH/2 - camX + canvas.width/2,
@@ -34,32 +34,38 @@ function isoToScreen(x, y) {
 
 // Game loop
 function gameLoop() {
-    // Move player
+    // Move player with edge constraints
     if(keys['w'] && player.y > 0) player.y -= player.speed;
     if(keys['s'] && player.y < GRID_HEIGHT - 1) player.y += player.speed;
     if(keys['a'] && player.x > 0) player.x -= player.speed;
     if(keys['d'] && player.x < GRID_WIDTH - 1) player.x += player.speed;
 
-    // Update camera to center on player
-    const playerScreen = {
-        x: (player.x - player.y) * TILE_WIDTH/2,
-        y: (player.x + player.y) * TILE_HEIGHT/2
-    };
-    camX = playerScreen.x - canvas.width/2;
-    camY = playerScreen.y - canvas.height/2;
+    // Calculate camera to center player
+    const playerScreenX = (player.x - player.y) * TILE_WIDTH/2;
+    const playerScreenY = (player.x + player.y) * TILE_HEIGHT/2;
+
+    camX = playerScreenX - canvas.width/2;
+    camY = playerScreenY - canvas.height/2;
+
+    // Clamp camera so it doesn't show outside map
+    const maxCamX = (GRID_WIDTH - GRID_HEIGHT) * TILE_WIDTH/2;
+    const maxCamY = (GRID_WIDTH + GRID_HEIGHT) * TILE_HEIGHT/2;
+
+    camX = Math.max(0, Math.min(camX, maxCamX - canvas.width));
+    camY = Math.max(0, Math.min(camY, maxCamY - canvas.height));
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw grid
-    const startI = Math.max(0, Math.floor(player.x - 20));
-    const endI = Math.min(GRID_WIDTH, Math.ceil(player.x + 20));
-    const startJ = Math.max(0, Math.floor(player.y - 15));
-    const endJ = Math.min(GRID_HEIGHT, Math.ceil(player.y + 15));
-
-    for(let i=startI; i<endI; i++){
-        for(let j=startJ; j<endJ; j++){
+    // Draw visible grid
+    for(let i = 0; i < GRID_WIDTH; i++){
+        for(let j = 0; j < GRID_HEIGHT; j++){
             const pos = isoToScreen(i, j);
+
+            // Only draw tiles visible on screen
+            if(pos.x + TILE_WIDTH/2 < 0 || pos.x - TILE_WIDTH/2 > canvas.width) continue;
+            if(pos.y + TILE_HEIGHT < 0 || pos.y > canvas.height) continue;
+
             ctx.strokeStyle = 'black';
             ctx.beginPath();
             ctx.moveTo(pos.x, pos.y);
