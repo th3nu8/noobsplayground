@@ -1,6 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Fullscreen canvas
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -8,8 +9,8 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-const TILE_WIDTH = 64;
-const TILE_HEIGHT = 32;
+const TILE_WIDTH = 64; // width of diamond
+const TILE_HEIGHT = 32; // height of diamond
 const GRID_WIDTH = 250;
 const GRID_HEIGHT = 250;
 
@@ -25,16 +26,16 @@ const keys = {};
 window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
 window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
 
-// Convert **world pixel coordinates** to **isometric screen coordinates**
-function isoToScreen(x, y) {
+// Convert grid coordinates to isometric screen coordinates
+function isoToScreen(gridX, gridY) {
     return {
-        x: (x - y) / 2,
-        y: (x + y) / 4
+        x: (gridX - gridY) * (TILE_WIDTH / 2),
+        y: (gridX + gridY) * (TILE_HEIGHT / 2)
     };
 }
 
 function gameLoop() {
-    // --- Move player along screen axes ---
+    // Move player along screen axes
     if (keys['w']) player.y -= player.speed;
     if (keys['s']) player.y += player.speed;
     if (keys['a']) player.x -= player.speed;
@@ -44,37 +45,36 @@ function gameLoop() {
     player.x = Math.max(0, Math.min(player.x, GRID_WIDTH * TILE_WIDTH));
     player.y = Math.max(0, Math.min(player.y, GRID_HEIGHT * TILE_HEIGHT));
 
-    // Camera follows player
-    const cam = { x: player.x, y: player.y };
+    // Camera offset (player in center)
+    const camX = player.x;
+    const camY = player.y;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // --- Draw visible tiles ---
+    // Draw only tiles visible on screen
     const buffer = 10; // extra tiles around screen
-    const startI = 0;
-    const endI = GRID_WIDTH;
-    const startJ = 0;
-    const endJ = GRID_HEIGHT;
+    const minI = 0;
+    const maxI = GRID_WIDTH;
+    const minJ = 0;
+    const maxJ = GRID_HEIGHT;
 
-    for (let i = startI; i < endI; i++) {
-        for (let j = startJ; j < endJ; j++) {
-            const worldX = i * TILE_WIDTH;
-            const worldY = j * TILE_HEIGHT;
-            const screen = isoToScreen(worldX, worldY);
-            const screenX = screen.x - (cam.x - canvas.width / 2);
-            const screenY = screen.y - (cam.y - canvas.height / 2);
+    for (let i = minI; i < maxI; i++) {
+        for (let j = minJ; j < maxJ; j++) {
+            const screen = isoToScreen(i, j);
+            const screenX = screen.x - camX + canvas.width / 2;
+            const screenY = screen.y - camY + canvas.height / 2;
 
-            // Skip tiles outside the screen
+            // Skip tiles outside screen
             if (screenX + TILE_WIDTH / 2 < 0 || screenX - TILE_WIDTH / 2 > canvas.width) continue;
             if (screenY + TILE_HEIGHT < 0 || screenY > canvas.height) continue;
 
-            // Draw tile
+            // Draw diamond tile
             ctx.strokeStyle = 'black';
             ctx.beginPath();
-            ctx.moveTo(screenX, screenY);
-            ctx.lineTo(screenX + TILE_WIDTH / 2, screenY + TILE_HEIGHT / 2);
-            ctx.lineTo(screenX, screenY + TILE_HEIGHT);
-            ctx.lineTo(screenX - TILE_WIDTH / 2, screenY + TILE_HEIGHT / 2);
+            ctx.moveTo(screenX, screenY); // top
+            ctx.lineTo(screenX + TILE_WIDTH / 2, screenY + TILE_HEIGHT / 2); // right
+            ctx.lineTo(screenX, screenY + TILE_HEIGHT); // bottom
+            ctx.lineTo(screenX - TILE_WIDTH / 2, screenY + TILE_HEIGHT / 2); // left
             ctx.closePath();
             ctx.stroke();
 
@@ -86,7 +86,7 @@ function gameLoop() {
         }
     }
 
-    // --- Draw player in center ---
+    // Draw player in center
     ctx.fillStyle = player.color;
     ctx.beginPath();
     ctx.arc(canvas.width / 2, canvas.height / 2, 10, 0, Math.PI * 2);
