@@ -4,16 +4,16 @@ const path = require('path');
 
 const app = express();
 
-// Serve your main website from the 'main' folder
-app.use('/', express.static(path.join(__dirname, 'main')));
+// Serve the main website (everything in the current folder)
+app.use('/', express.static(__dirname));
 
-// Optional: Health check route (useful for hosting services)
+// Optional health check route
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
 
-// Start the server
-const PORT = process.env.PORT || 80;
+// Start the server on port 80
+const PORT = 80;
 app.listen(PORT, () => {
-  console.log(`✅ Main website server running at http://localhost:${PORT}`);
+  console.log(`✅ Main website running at http://localhost:${PORT}`);
 });
