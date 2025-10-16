@@ -236,5 +236,6 @@ function applyWorldLoad(payload) {
 }
 
 // 4. SERVER START (Must be unique)
+app.use('/buildnblocks', express.static(path.join(__dirname, 'public')));
 const PORT = process.env.PORT || 80;
 server.listen(PORT, () => console.log(`Server listening on http://localhost:${PORT}`));
