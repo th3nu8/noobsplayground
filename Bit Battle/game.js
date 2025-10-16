@@ -14,12 +14,12 @@ const TILE_HEIGHT = 32;
 const GRID_WIDTH = 250;
 const GRID_HEIGHT = 250;
 
-// Player position in **world pixel coordinates**
+// --- Player position in world pixel coordinates, random spawn ---
 const player = {
-    x: (GRID_WIDTH / 2) * TILE_WIDTH,
-    y: (GRID_HEIGHT / 2) * TILE_HEIGHT,
+    x: Math.random() * GRID_WIDTH * TILE_WIDTH,
+    y: Math.random() * GRID_HEIGHT * TILE_HEIGHT,
     color: 'red',
-    speed: 5 // pixels per frame
+    speed: 5
 };
 
 const keys = {};
@@ -27,14 +27,14 @@ window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
 window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
 
 // Convert world pixel coordinates to isometric screen coordinates
-function isoToScreen(px, py) {
+function isoToScreen(x, y) {
     return {
-        x: (px - py) / 2,
-        y: (px + py) / 4
+        x: (x - y) / 2,
+        y: (x + y) / 4
     };
 }
 
-// Clamp player inside world bounds
+// Clamp value
 function clamp(val, min, max) {
     return Math.max(min, Math.min(max, val));
 }
@@ -58,26 +58,19 @@ function gameLoop() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // --- Draw all visible tiles to cover screen ---
-    const cols = Math.ceil(canvas.width / TILE_WIDTH) + 4;
-    const rows = Math.ceil(canvas.height / TILE_HEIGHT) + 4;
+    // --- Draw visible tiles to cover screen ---
+    const startCol = Math.max(0, Math.floor((camX) / TILE_WIDTH) - 2);
+    const endCol = Math.min(GRID_WIDTH, Math.ceil((camX + canvas.width) / TILE_WIDTH) + 2);
+    const startRow = Math.max(0, Math.floor((camY) / TILE_HEIGHT) - 2);
+    const endRow = Math.min(GRID_HEIGHT, Math.ceil((camY + canvas.height) / TILE_HEIGHT) + 2);
 
-    // Estimate top-left tile in world pixels
-    const startX = Math.floor(camX - TILE_WIDTH * 2);
-    const startY = Math.floor(camY - TILE_HEIGHT * 2);
+    for (let i = startCol; i < endCol; i++) {
+        for (let j = startRow; j < endRow; j++) {
+            const screen = isoToScreen(i * TILE_WIDTH, j * TILE_HEIGHT);
+            const screenX = screen.x - camX;
+            const screenY = screen.y - camY;
 
-    for (let i = 0; i < GRID_WIDTH; i++) {
-        for (let j = 0; j < GRID_HEIGHT; j++) {
-            const worldX = i * TILE_WIDTH;
-            const worldY = j * TILE_HEIGHT;
-            const screenPos = isoToScreen(worldX, worldY);
-            const screenX = screenPos.x - camX;
-            const screenY = screenPos.y - camY;
-
-            // Only draw if on screen
-            if (screenX + TILE_WIDTH / 2 < 0 || screenX - TILE_WIDTH / 2 > canvas.width) continue;
-            if (screenY + TILE_HEIGHT < 0 || screenY > canvas.height) continue;
-
+            // Draw tile
             ctx.strokeStyle = 'black';
             ctx.beginPath();
             ctx.moveTo(screenX, screenY);
@@ -86,6 +79,12 @@ function gameLoop() {
             ctx.lineTo(screenX - TILE_WIDTH / 2, screenY + TILE_HEIGHT / 2);
             ctx.closePath();
             ctx.stroke();
+
+            // Draw boundaries for first/last tiles
+            if (i === 0 || j === 0 || i === GRID_WIDTH - 1 || j === GRID_HEIGHT - 1) {
+                ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                ctx.fill();
+            }
         }
     }
 
