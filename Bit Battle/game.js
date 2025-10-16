@@ -10,7 +10,7 @@ resizeCanvas();
 
 const TILE_WIDTH = 64;
 const TILE_HEIGHT = 32;
-const GRID_WIDTH = 50;  // reduce for testing
+const GRID_WIDTH = 50;
 const GRID_HEIGHT = 50;
 
 // Player in world pixel coordinates
@@ -25,7 +25,7 @@ const keys = {};
 window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
 window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
 
-// Convert grid coordinates to screen coordinates
+// Convert grid coordinates to isometric screen coordinates
 function isoToScreen(gridX, gridY) {
     return {
         x: (gridX - gridY) * (TILE_WIDTH / 2),
@@ -33,24 +33,40 @@ function isoToScreen(gridX, gridY) {
     };
 }
 
+// Convert pixel coordinates to approximate grid coordinates
+function pixelToGrid(px, py) {
+    const gridX = (2 * py + px) / TILE_WIDTH / 2;
+    const gridY = (2 * py - px) / TILE_WIDTH / 2;
+    return { x: gridX, y: gridY };
+}
+
 function gameLoop() {
+    let newX = player.x;
+    let newY = player.y;
+
     // Move player along screen axes
-    if (keys['w']) player.y -= player.speed;
-    if (keys['s']) player.y += player.speed;
-    if (keys['a']) player.x -= player.speed;
-    if (keys['d']) player.x += player.speed;
+    if (keys['w']) newY -= player.speed;
+    if (keys['s']) newY += player.speed;
+    if (keys['a']) newX -= player.speed;
+    if (keys['d']) newX += player.speed;
 
-    // Clamp player inside map bounds
-    player.x = Math.max(0, Math.min(player.x, (GRID_WIDTH - 1) * TILE_WIDTH));
-    player.y = Math.max(0, Math.min(player.y, (GRID_HEIGHT - 1) * TILE_HEIGHT));
+    // Convert new position to grid coordinates
+    const gridPos = pixelToGrid(newX, newY);
 
-    // Camera offset (player centered)
+    // Clamp based on isometric grid boundaries
+    if (gridPos.x >= 0 && gridPos.x <= GRID_WIDTH - 1 &&
+        gridPos.y >= 0 && gridPos.y <= GRID_HEIGHT - 1) {
+        player.x = newX;
+        player.y = newY;
+    }
+
+    // Camera follows player
     const camX = player.x;
     const camY = player.y;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw tiles in grid units
+    // Draw tiles
     for (let i = 0; i < GRID_WIDTH; i++) {
         for (let j = 0; j < GRID_HEIGHT; j++) {
             const screen = isoToScreen(i, j);
@@ -71,7 +87,7 @@ function gameLoop() {
             ctx.closePath();
             ctx.stroke();
 
-            // Draw boundaries for first/last tiles
+            // Draw boundaries visually for edge tiles
             if (i === 0 || j === 0 || i === GRID_WIDTH - 1 || j === GRID_HEIGHT - 1) {
                 ctx.fillStyle = 'rgba(0,0,0,0.2)';
                 ctx.fill();
