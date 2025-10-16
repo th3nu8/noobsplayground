@@ -13,18 +13,6 @@ const TILE_HEIGHT = 32;
 const GRID_WIDTH = 50;
 const GRID_HEIGHT = 50;
 
-// Player in world pixel coordinates
-const player = {
-    x: Math.random() * (GRID_WIDTH - 1) * TILE_WIDTH,
-    y: Math.random() * (GRID_HEIGHT - 1) * TILE_HEIGHT,
-    color: 'red',
-    speed: 5
-};
-
-const keys = {};
-window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
-window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
-
 // Convert grid coordinates to isometric screen coordinates
 function isoToScreen(gridX, gridY) {
     return {
@@ -40,24 +28,46 @@ function pixelToGrid(px, py) {
     return { x: gridX, y: gridY };
 }
 
+// Player spawn **inside the grid**
+function spawnPlayer() {
+    const gridX = Math.floor(Math.random() * GRID_WIDTH);
+    const gridY = Math.floor(Math.random() * GRID_HEIGHT);
+    const screen = isoToScreen(gridX, gridY);
+    return { x: screen.x, y: screen.y };
+}
+
+const player = {
+    ...spawnPlayer(),
+    color: 'red',
+    speed: 5
+};
+
+const keys = {};
+window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
+window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
 function gameLoop() {
     let newX = player.x;
     let newY = player.y;
 
-    // Move player along screen axes
+    // Move along X/Y separately for sliding
     if (keys['w']) newY -= player.speed;
     if (keys['s']) newY += player.speed;
     if (keys['a']) newX -= player.speed;
     if (keys['d']) newX += player.speed;
 
-    // Convert new position to grid coordinates
-    const gridPos = pixelToGrid(newX, newY);
-
-    // Clamp based on isometric grid boundaries
-    if (gridPos.x >= 0 && gridPos.x <= GRID_WIDTH - 1 &&
-        gridPos.y >= 0 && gridPos.y <= GRID_HEIGHT - 1) {
-        player.x = newX;
+    // Check vertical movement
+    const gridCheckY = pixelToGrid(player.x, newY);
+    if (gridCheckY.x >= 0 && gridCheckY.x <= GRID_WIDTH - 1 &&
+        gridCheckY.y >= 0 && gridCheckY.y <= GRID_HEIGHT - 1) {
         player.y = newY;
+    }
+
+    // Check horizontal movement
+    const gridCheckX = pixelToGrid(newX, player.y);
+    if (gridCheckX.x >= 0 && gridCheckX.x <= GRID_WIDTH - 1 &&
+        gridCheckX.y >= 0 && gridCheckX.y <= GRID_HEIGHT - 1) {
+        player.x = newX;
     }
 
     // Camera follows player
