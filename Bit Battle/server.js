@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
-const PORT = 3001;
 
 // Serve static files from the same folder
-app.use('/', express.static(path.join(__dirname, 'main')));
-app.use('/buildnblocks', express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
+
+const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
