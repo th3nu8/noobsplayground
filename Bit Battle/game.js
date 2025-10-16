@@ -10,12 +10,12 @@ const TILE_HEIGHT = 32;
 const GRID_WIDTH = 250;
 const GRID_HEIGHT = 250;
 
-// Player world coordinates in tiles
+// Player position in world coordinates (pixels relative to tiles)
 const player = {
-    x: 125,
-    y: 125,
+    x: GRID_WIDTH / 2,
+    y: GRID_HEIGHT / 2,
     color: 'red',
-    speed: 0.1
+    speed: 0.2 // adjust as needed
 };
 
 const keys = {};
@@ -24,7 +24,7 @@ const keys = {};
 window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
 window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
 
-// Convert world coordinates to isometric screen coordinates
+// Convert **screen movement coordinates** to isometric screen coordinates
 function isoToScreen(x, y) {
     return {
         x: (x - y) * TILE_WIDTH / 2,
@@ -32,19 +32,19 @@ function isoToScreen(x, y) {
     };
 }
 
-// Clamp value
+// Clamp function
 function clamp(val, min, max) {
     return Math.max(min, Math.min(max, val));
 }
 
 function gameLoop() {
-    // Move player relative to screen axes
+    // Move **screen-axis movement**, independent of isometric grid
     if (keys['w']) player.y -= player.speed;
     if (keys['s']) player.y += player.speed;
     if (keys['a']) player.x -= player.speed;
     if (keys['d']) player.x += player.speed;
 
-    // Clamp to grid
+    // Clamp player inside the grid
     player.x = clamp(player.x, 0, GRID_WIDTH - 1);
     player.y = clamp(player.y, 0, GRID_HEIGHT - 1);
 
@@ -67,7 +67,6 @@ function gameLoop() {
             const screenX = pos.x - camX;
             const screenY = pos.y - camY;
 
-            // Only draw if visible
             if (screenX + TILE_WIDTH / 2 < 0 || screenX - TILE_WIDTH / 2 > canvas.width) continue;
             if (screenY + TILE_HEIGHT < 0 || screenY > canvas.height) continue;
 
@@ -82,7 +81,7 @@ function gameLoop() {
         }
     }
 
-    // Draw player in center of screen
+    // Draw player **always in the center of the screen**
     ctx.fillStyle = player.color;
     ctx.beginPath();
     ctx.arc(canvas.width / 2, canvas.height / 2 + TILE_HEIGHT / 2, 10, 0, Math.PI * 2);
@@ -91,7 +90,7 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-// Handle window resize
+// Handle resizing
 window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
