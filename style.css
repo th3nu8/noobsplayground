@@ -55,4 +55,7 @@ canvas {
   margin: 50px auto;
   height: 400px;
   display: block;
+  border: 5px solid white;
+  border-radius: 15px;
+  background-color: black;
 }
