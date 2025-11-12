@@ -49,3 +49,8 @@ canvas {
   height: 100%;
   z-index: -1;
 }
+#browser {
+  left: 50%;
+  transform: translateX(50%);
+  margin-top: 50px;
+}
