@@ -29,3 +29,6 @@ a:active {
   margin-left: auto;
   display: flex;
 }
+canvas {
+  display: block;
+}
