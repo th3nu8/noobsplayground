@@ -51,7 +51,7 @@ canvas {
   z-index: -1;
 }
 #browser {
-  left: 50%;
-  transform: translateX(50%);
-  margin-top: 50px;
+  margin: 50px auto;
+  height: 400px;
+  display: block;
 }
