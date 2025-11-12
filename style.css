@@ -18,8 +18,8 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  width: 80%;
-  transform: translateX(10%);
+  width: 60%;
+  transform: translateX(20%);
 }
 .header h1 {
   margin-left: 10px;
