@@ -51,6 +51,7 @@ canvas {
   z-index: -1;
 }
 #browser {
+  width: 80%;
   margin: 50px auto;
   height: 400px;
   display: block;
