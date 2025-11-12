@@ -8,7 +8,7 @@ body {
   color: white;
   border: 5px solid white;
   display: flex;
-  border-radius: 20%;
+  border-radius: 20px;
 }
 .header h1 {
   margin-left: 10px;
