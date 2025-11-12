@@ -11,6 +11,7 @@ body {
   border: 5px solid white;
   display: flex;
   border-radius: 20px;
+  position: sticky;
 }
 .header h1 {
   margin-left: 10px;
