@@ -13,6 +13,7 @@ body {
   border-radius: 20px;
   position: sticky;
   top: 0;
+  z-index: 100;
 }
 .header h1 {
   margin-left: 10px;
@@ -40,4 +41,5 @@ canvas {
   top: 0;
   position: fixed;
   height: 100vh;
+  z-index: -1;
 }
