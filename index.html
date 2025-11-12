@@ -28,7 +28,7 @@
         
         function resize() {
             w = canvas.width = window.innerWidth;
-            h = canvas.height = window.innerHeight;
+            h = canvas.height = document.body.scrollHeight;
             createHexagons();
         }
         
