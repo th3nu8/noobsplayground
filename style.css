@@ -2,12 +2,13 @@
   font-family: "Comic Neue";
 }
 body {
-  background-color: rgba(0,0,0,0.5)
+  background-color: black;
 }
 .header {
   color: white;
   border: 5px solid white;
   display: flex;
+  border-radius: 20%;
 }
 .header h1 {
   margin-left: 10px;
