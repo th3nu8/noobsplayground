@@ -21,7 +21,7 @@ body {
   z-index: 100;
   width: 50%;
   transform: translateX(50%);
-  text-align: center;
+  text-align: center !important;
 }
 .header h1 {
   margin-left: 10px;
