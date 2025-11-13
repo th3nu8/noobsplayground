@@ -93,42 +93,5 @@
             }
         }
     }
-    
-    function animate() {
-        // Clear the entire canvas drawing area
-        ctx.fillStyle = '#0a0a0a';
-        ctx.fillRect(0, 0, w, h);
-        
-        const time = Date.now() * 0.001;
-        
-        hexagons.forEach(hex => {
-            hex.glow = (Math.sin(time * hex.glowSpeed + hex.glowPhase) + 1) / 2;
-            drawHexagon(hex.x, hex.y, hexRadius, hex.brightness, hex.glow);
-        });
-        
-        requestAnimationFrame(animate);
-    }
-
-    // --- Event Listeners for Dynamic Redrawing ---
-
-    // 1. Initial call after all content is loaded
-    window.addEventListener('load', resizeAndRedraw);
-
-    // 2. Window resize event
-    window.addEventListener('resize', resizeAndRedraw);
-
-    // 3. MutationObserver to handle dynamic content (e.g., infinite scroll)
-    const observer = new MutationObserver((mutationsList, observer) => {
-        // Only redraw if the measured height is actually greater than the current canvas height
-        if (document.body.offsetHeight > h) {
-            resizeAndRedraw();
-        }
-    });
-
-    // Start observing the body for changes to content
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
-
-    // Start the animation loop
-    animate();
   </script>
 </body>
