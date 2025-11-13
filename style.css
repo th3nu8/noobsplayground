@@ -22,6 +22,7 @@ body {
   width: 50%;
   transform: translateX(50%);
   text-align: center !important;
+  margin-top: 15px;
 }
 .header h1 {
   margin-left: auto;
@@ -81,4 +82,5 @@ canvas {
   margin-top: 15px;
   object-fit: cover;
   margin-bottom: 15px;
+  justify-content: center;
 }
