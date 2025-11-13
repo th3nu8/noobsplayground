@@ -42,7 +42,6 @@ a:active {
 }
 .right {
   margin-right: auto;
-  display: flex;
 }
 canvas {
   display: block;
