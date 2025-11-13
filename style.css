@@ -62,3 +62,13 @@ canvas {
   background-color: white;
   color: black !important;
 }
+#game_buttons {
+  border: 5px solid white;
+  margin-left: 25px;
+  margin-right: 25px;
+  border-radius: 20px;
+}
+#game_buttons img {
+  border-radius: 10px;
+  border: 3px solid white;
+}
