@@ -23,6 +23,7 @@ body {
   margin-top: 25px;
   margin-left: 20px;
   margin-right: 20px;
+  background-color: hsla(0, 0%, 50%, .5);
 }
 .header h1 {
   margin-left: auto;
