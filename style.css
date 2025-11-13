@@ -19,8 +19,6 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  width: 60%;
-  transform: translateX(30%);
   text-align: center !important;
   margin-top: 15px;
 }
