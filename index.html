@@ -9,14 +9,15 @@
   <div class='header'>
     <h1>Noobs Playground</h1>
     <div class='right'>
-      <a href='games.html' target='_blank'><h3>Games</h3></a>
+      <a href='games.html' target='_blank'><h3>Games</h3></a
       <a href='credits.html' target='_blank'><h3>Credits</h3></a>
+      <a href='browser.html' target="_blank'"><h3>Browser</h3></a>
       <a href='https://discord.com' target='_blank'><h3>Discord</h3></a>
     </div>
   </div>
   <canvas id='honeycomb'></canvas>
   
-  <script>
+  <script>
     // --- Canvas Setup ---
     const canvas = document.getElementById('honeycomb');
     const ctx = canvas.getContext('2d');
@@ -108,18 +109,5 @@
 
     observer.observe(document.body, { childList: true, subtree: true, attributes: true });
 
-  </script>
-
-  <script type="text/javascript">
-    window.$crisp = [];
-    // !!! IMPORTANT: REPLACE THIS WITH YOUR UNIQUE WEBSITE ID FROM CRISP !!!
-    window.CRISP_WEBSITE_ID = "bc7939a6-e318-4067-9aff-59b703590e99"; 
-    (function () {
-      d = document;
-      s = d.createElement("script");
-      s.src = "https://client.crisp.chat/l.js";
-      s.async = 1;
-      d.getElementsByTagName("head")[0].appendChild(s);
-    })();
-  </script>
-  </body>
+  </script>
+</body>
