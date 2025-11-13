@@ -70,9 +70,9 @@ a:active {
     border-radius: 20px;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 30px;
-    position: relative; 
-    z-index: 1; 
+    height: auto; 
+    min-height: 250px;
+    overflow: visible; 
 }
 #game_buttons img {
   border-radius: 10px;
