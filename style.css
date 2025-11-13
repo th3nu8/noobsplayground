@@ -63,6 +63,8 @@ canvas {
   color: black !important;
 }
 #game_buttons {
+  left: 50%;
+  transform: translateX(50%)
   border: 5px solid white;
   margin-left: 25px;
   margin-right: 25px;
