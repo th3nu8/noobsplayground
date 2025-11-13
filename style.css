@@ -69,7 +69,7 @@ canvas {
   border-radius: 20px;
   display: flex;
   flex-wrap: wrap;
-  width: 1512px;
+  width: 78.75%;
 }
 #game_buttons img {
   border-radius: 10px;
