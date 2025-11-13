@@ -44,13 +44,14 @@ a:active {
   margin-right: auto;
   display: flex;
 }
-canvas {
-  display: block;
-  width: 100%;
-  top: 0;
-  position: absolute;
-  height: 100%;
-  z-index: -1;
+#honeycomb {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; 
+    pointer-events: none; 
 }
 #browser {
   width: 80%;
@@ -80,7 +81,4 @@ canvas {
   margin-top: 15px;
   object-fit: cover;
   margin-bottom: 15px;
-}
-#honeycomb {
-  z-index: -1;
 }
