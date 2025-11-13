@@ -81,3 +81,6 @@ canvas {
   object-fit: cover;
   margin-bottom: 15px;
 }
+#honeycomb {
+  z-index: -1;
+}
