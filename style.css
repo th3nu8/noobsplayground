@@ -67,6 +67,8 @@ canvas {
   margin-left: 25px;
   margin-right: 25px;
   border-radius: 20px;
+  display: flex;
+  flex-wrap: wrap;
 }
 #game_buttons img {
   border-radius: 10px;
