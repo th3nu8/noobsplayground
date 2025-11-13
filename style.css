@@ -77,4 +77,5 @@ canvas {
   height: 180px;
   margin-top: 15px;
   object-fit: cover;
+  margin-bottom: 15px;
 }
