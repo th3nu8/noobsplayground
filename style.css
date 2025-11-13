@@ -41,7 +41,7 @@ a:active {
   color: gray;
 }
 .right {
-  margin-left: auto;
+  margin-right: auto;
   display: flex;
 }
 canvas {
