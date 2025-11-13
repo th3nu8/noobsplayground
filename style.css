@@ -25,12 +25,12 @@ body {
 }
 .header h1 {
   margin-left: auto;
-  margin-right: 15px;
+  margin-right: 15px;;
   transform: translateX(0) !important;
 }
 .header h3 {
   transform: translateY(12px);
-  margin-right: 15px;
+  margin-right: auto;
 }
 a {
   text-decoration: none;
