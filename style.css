@@ -44,14 +44,13 @@ a:active {
   margin-right: auto;
   display: flex;
 }
-#honeycomb {
-    position: fixed; 
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1; 
-    pointer-events: none; 
+canvas {
+  display: block;
+  width: 100%;
+  top: 0;
+  position: absolute;
+  height: 100%;
+  z-index: -1;
 }
 #browser {
   width: 80%;
@@ -64,15 +63,12 @@ a:active {
   color: black !important;
 }
 #game_buttons {
-    border: 5px solid white;
-    margin-left: 25px;
-    margin-right: 25px;
-    border-radius: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    height: auto; 
-    min-height: 250px;
-    overflow: visible; 
+  border: 5px solid white;
+  margin-left: 25px;
+  margin-right: 25px;
+  border-radius: 20px;
+  display: flex;
+  flex-wrap: wrap;
 }
 #game_buttons img {
   border-radius: 10px;
