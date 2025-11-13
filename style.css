@@ -71,6 +71,7 @@ canvas {
   display: flex;
   flex-wrap: wrap;
   width: 78.75%;
+  justify-content: center;
 }
 #game_buttons img {
   border-radius: 10px;
@@ -82,5 +83,4 @@ canvas {
   margin-top: 15px;
   object-fit: cover;
   margin-bottom: 15px;
-  justify-content: center;
 }
