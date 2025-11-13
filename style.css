@@ -20,7 +20,7 @@ body {
   top: 0;
   z-index: 100;
   width: 60%;
-  transform: translateX(50%);
+  transform: translateX(60%);
   text-align: center !important;
   margin-top: 15px;
 }
