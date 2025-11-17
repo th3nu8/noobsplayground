@@ -101,7 +101,7 @@ iframe {
   border: 5px solid white;
   border-radius: 25px;
   background-color: hsla(0, 0%, 50%, .5);
-  text-color: white;
+  color: white;
 }
 .mainpage h1 {
   margin-left: 15px;
