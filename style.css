@@ -44,7 +44,7 @@ a:active {
 }
 a:hover {
   font-size: 110%;
-  transform: translateY(5px);
+  transform: translateY(-5px);
 }
 .right {
   margin-right: auto;
