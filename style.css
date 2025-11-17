@@ -100,4 +100,6 @@ iframe {
   margin-top: 20px;
   border: 5px solid white;
   border-radius: 25px;
+  background-color: hsla(0, 0%, 50%, .5);
+  font-color: white;
 }
