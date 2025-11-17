@@ -43,7 +43,7 @@ a:active {
   color: gray;
 }
 a:hover {
-  font-size: 115%;
+  font-size: 80%;
 }
 .right {
   margin-right: auto;
