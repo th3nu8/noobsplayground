@@ -85,3 +85,9 @@ canvas {
   object-fit: cover;
   margin-bottom: 15px;
 }
+iframe {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
