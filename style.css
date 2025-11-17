@@ -43,7 +43,7 @@ a:active {
   color: gray;
 }
 a:hover {
-  font-size: 80%;
+  font-size: 110%;
   transform: translateX(5px);
 }
 .right {
