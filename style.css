@@ -94,3 +94,10 @@ iframe {
   display: block;
   margin-bottom: 100px;
 }
+.mainpage {
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 20px;
+  border: 5px solid white;
+  border-radius: 25px;
+}
