@@ -42,6 +42,9 @@ a:hover,
 a:active {
   color: gray;
 }
+a:hover {
+  font-size: 150%;
+}
 .right {
   margin-right: auto;
   display: flex;
