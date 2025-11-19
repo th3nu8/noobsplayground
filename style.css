@@ -118,4 +118,6 @@ iframe {
   left: 15px;
   position: sticky;
   z-index: 1000;
+  border-radius: 20px;
+  border: 5px solid white;
 }
