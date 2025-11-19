@@ -113,8 +113,9 @@ iframe {
 .mainpage p {
   margin-left: 25px;
 }
-.elfsight-app-30d8c0f8-136e-4240-8662-c7c00fd73102 {
-  bottom: 20px;
-  left: 20px;
+.counter {
+  bottom: 15px;
+  left: 15px;
   position: sticky;
+  z-index: 1000;
 }
