@@ -113,31 +113,3 @@ iframe {
 .mainpage p {
   margin-left: 25px;
 }
-#stat-counter {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  padding: 10px 15px;
-  background: #282c34;
-  color: #ffffff;
-  border: 1px solid #444;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  z-index: 9999;
-  line-height: 1.5;
-}
-
-#stat-counter p {
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 5px;
-  border-bottom: 1px solid #444;
-  padding-bottom: 5px;
-}
-
-#stat-counter span {
-  font-weight: bold;
-  color: #61dafb;
-}
